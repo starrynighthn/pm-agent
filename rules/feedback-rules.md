@@ -1,60 +1,60 @@
-# Quy tắc Quản lý Feedback - [PROJECT_NAME]
+# Feedback Management Rules - [PROJECT_NAME]
 
-## 1. Định nghĩa
-Feedback (Phản ánh) là các thông tin, lỗi phát sinh, yêu cầu hỗ trợ hoặc đề xuất cải tiến từ phía người dùng gửi về dự án [PROJECT_NAME] qua các kênh truyền thông khác nhau. Feedback cần được quản lý chặt chẽ để đảm bảo khả năng truy vết và xử lý triệt để.
+## 1. Definition
+Feedback refers to user reports, system errors, support requests, or improvement suggestions sent by users to the [PROJECT_NAME] project through various communication channels. Feedback must be managed carefully to ensure full traceability and complete resolution.
 
-## 2. Quy ước định danh và Lưu trữ
-- Mã định danh tạm thời: `FB-YYYYMMDD-XXX` (Ví dụ: `FB-20260520-001`).
-- Mỗi feedback được lưu dưới dạng một file Markdown (`.md`) riêng biệt trong thư mục `feedbacks/`.
+## 2. Naming and Storage Conventions
+- Temporary feedback identifier format: `FB-YYYYMMDD-XXX` (e.g., `FB-20260520-001`).
+- Each feedback is saved as an individual Markdown (`.md`) file in the `feedbacks/` directory.
 
-## 3. Metadata chuẩn cho Feedback (Frontmatter)
+## 3. Standard Metadata for Feedback (Frontmatter)
 
-Mọi file Feedback phải có đầy đủ YAML frontmatter sau:
+Every feedback file must contain the following YAML frontmatter:
 
 ```yaml
 ---
 entity: feedback
-fb_id: FB-YYYYMMDD-XXX
-title: Tiêu đề tóm tắt phản ánh
+fb_id: FB-20260520-001
+title: Summary title of the feedback
 reporter:
-  name: Tên người phản ánh
-  contact: Thông tin liên lạc (SĐT/Email/Username)
+  name: Reporter's name
+  contact: Contact information (Phone/Email/Username)
 channel: whatsapp           # whatsapp | vops | phone | email | direct | other
 fb_type: system_error       # system_error | proposal | support | other
-fb_group: "Tên nhóm chat"   # Tên nhóm chat trên kênh truyền thông để truy vết sau này
-handler: username           # Username của người tiếp nhận & xử lý chính (phải có trong people/)
-collaborators: []           # Danh sách username phối hợp xử lý (phải có trong people/)
+fb_group: "Chat Group Name" # Name of the chat group or channel for traceability
+handler: username           # Primary handler's username (must exist in people/)
+collaborators: []           # List of collaborating usernames (must exist in people/)
 progress: open              # open | in_progress | resolved | closed
-result: ""                  # Kết quả xử lý thực tế (bắt buộc khi trạng thái là resolved/closed)
-updates:                    # Danh sách nhật ký tiến độ công việc kèm thời điểm cập nhật
-  - date: "YYYY-MM-DD HH:MM" # Thời điểm cập nhật
-    author: username        # Người cập nhật (phải có trong people/)
-    content: "Mô tả tiến độ công việc"
-created_date: 2026-05-20    # Ngày tiếp nhận
-updated_date: 2026-05-20    # Ngày cập nhật gần nhất
-related_tickets: []         # Danh sách các ticket [PREFIX]-XXX liên quan (nếu có)
+result: ""                  # Actual outcome/result (mandatory when status is resolved/closed)
+updates:                    # List of progress updates with timestamps
+  - date: "YYYY-MM-DD HH:MM" # Timestamp of the update
+    author: username        # Author of the update (must exist in people/)
+    content: "Description of progress made"
+created_date: 2026-05-20    # Received date
+updated_date: 2026-05-20    # Last updated date
+related_tickets: []         # List of related [PREFIX]-XXX tickets (if any)
 ---
 ```
 
-## 4. Trạng thái và Luồng xử lý (Progress)
+## 4. Status and Handoff Flow (Progress)
 
-- `open`: Feedback mới tiếp nhận, đang chờ đánh giá và phân công người xử lý.
-- `in_progress`: Đang trong quá trình xử lý hoặc đang phát triển các ticket liên quan.
-- `resolved`: Đã xử lý xong kỹ thuật hoặc đã khắc phục lỗi, đang chờ xác nhận từ người phản ánh.
-- `closed`: Đã phản hồi lại cho người gửi và đóng feedback thành công.
+- `open`: Newly received feedback, waiting for evaluation and assignment.
+- `in_progress`: Under resolution or when related tickets are in development.
+- `resolved`: Technical resolution or fix completed, waiting for verification from the reporter.
+- `closed`: Successfully resolved, feedback provided to the reporter, and ticket closed.
 
-## 5. Quy tắc vận hành và Xác thực cho Agent
+## 5. Operational and Validation Rules for Agents
 
-1. **Khả năng truy vết (Traceability):**
-   - Trường `fb_group` là bắt buộc và phải điền chính xác tên nhóm chat nguồn (ví dụ: `"WhatsApp Group [PROJECT_NAME] Support"`) để phục vụ việc tra cứu lịch sử hội thoại sau này.
-2. **Hợp lệ Nhân sự và Vai trò:**
-   - **Người phản ánh (Reporter):** Thông tin người dùng/khách hàng gửi phản ánh (ghi nhận ở trường `reporter` dưới dạng text tự do, gồm Tên, SĐT, Email).
-   - **Người tiếp nhận & xử lý chính (Handler):** Thành viên nội bộ [PROJECT_NAME] trực tiếp tiếp nhận thông tin từ kênh chat và chịu trách nhiệm xử lý chính (username trong `handler` phải tồn tại thực tế trong thư mục `people/`).
-   - **Người phối hợp (Collaborators):** Các thành viên nội bộ [PROJECT_NAME] tham gia hỗ trợ giải quyết (các username trong danh sách `collaborators` phải tồn tại thực tế trong thư mục `people/`).
-   - **Nhật ký tiến độ (Updates):** Mỗi bản ghi nhật ký tiến độ trong `updates` phải ghi nhận rõ thời điểm `date` (định dạng `YYYY-MM-DD HH:MM`), người cập nhật `author` (phải tồn tại thực tế trong thư mục `people/`), và nội dung tiến độ cụ thể `content`.
-3. **Mối liên kết hai chiều:**
-   - Nếu một feedback cần giải quyết bằng code/task kỹ thuật, Agent phải tạo ticket tương ứng (ví dụ: `[PREFIX]-1035`) và điền key vào danh sách `related_tickets` của feedback, đồng thời trong ticket đó phải liên kết ngược lại đường dẫn của file feedback ở phần `document_links`.
-4. **Kết quả xử lý:**
-   - Khi chuyển trạng thái `progress` sang `resolved` hoặc `closed`, Agent **bắt buộc** phải điền nội dung kết quả xử lý cụ thể vào trường `result` (không được để trống).
-5. **Cập nhật Dashboard:**
-   - Sau khi tạo mới hoặc cập nhật bất kỳ feedback nào, Agent phải chạy script quét và cập nhật lại bảng thống kê feedback trên `README.md`.
+1. **Traceability:**
+   - The `fb_group` field is mandatory and must accurately capture the source chat group name (e.g., `"WhatsApp Group [PROJECT_NAME] Support"`) to assist in conversational tracking.
+2. **Personnel & Roles Validation:**
+   - **Reporter:** Customer/user who submitted the feedback (recorded in the `reporter` field as free-form text containing Name, Phone, and/or Email).
+   - **Handler:** Internal [PROJECT_NAME] team member who received and takes primary responsibility for the feedback (the username in `handler` must exist under the `people/` directory).
+   - **Collaborators:** Internal [PROJECT_NAME] team members assisting in the resolution (usernames in `collaborators` must exist under the `people/` directory).
+   - **Updates Log:** Every log entry in `updates` must record a valid `date` (format: `YYYY-MM-DD HH:MM`), a valid `author` (must exist under the `people/` directory), and a non-empty `content` describing progress.
+3. **Bidirectional Linking:**
+   - If a feedback requires technical implementation, the Agent must create a corresponding ticket (e.g., `[PREFIX]-1035`) and link it under `related_tickets`. The created ticket must in turn link to the feedback markdown file inside its `document_links`.
+4. **Resolution Result:**
+   - When transitioning the `progress` status to `resolved` or `closed`, the Agent **must** provide a detailed outcome description in the `result` field. Leaving it empty is not allowed.
+5. **Dashboard Updates:**
+   - After creating or updating any feedback file, the Agent must run the system scanning script to update the feedback statistics on the `README.md` dashboard.

@@ -2,7 +2,7 @@
 
 The agent must validate the following before writing any file:
 
-1. **Jira Link**: `jira_url` must match `https://10.30.165.157/jira/browse/<ticket_key>`.
+1. **Jira Link**: `jira_url` must match `https://jira.company.com/browse/<ticket_key>`.
 2. **People**: All usernames in `assignees` must exist in `people/` directory and their roles must match the assigned role.
 3. **Sprint**: `sprint_code` must exist in `sprints/` and the sprint file must list the `ticket_key`.
 4. **Version**: Referenced version codes must exist in `versions/`. `build_versions` must not be null if `release_time` is set for that platform.
