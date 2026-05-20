@@ -59,6 +59,11 @@ When creating/updating a ticket, the following metadata fields **must** be provi
 - Project documentation and metadata must be in **English**.
 - Filenames, keys, and identifiers must remain in their original formats.
 
+### 6. Personal Configuration and Local Environment Sanitization
+- **Strictly No Absolute Paths**: Always use relative paths from the project workspace root (e.g., `rules/project-rules.md` instead of `/Users/username/...`).
+- **No Private IPs or Credentials**: Never hardcode and commit private IP addresses (e.g., local Jira servers like `10.x.x.x` or `192.168.x.x`) or personal access credentials into shared repository files. Ensure they are replaced by generic patterns (e.g., `jira.company.com`) or gitignored.
+- **Gitignore Local Files**: Ensure all temporary AI Agent or IDE metadata directories (e.g., `.vscode/`, `.gemini/`, `.deepseek/`) are strictly kept in the `.gitignore` and never committed.
+
 ---
 
 ## Ticket Workflow
