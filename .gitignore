@@ -1,0 +1,15 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+
+# Agent Temporary / Metadata files
+.deepseek/
+.antigravitycli/
+.gemini/
+tickets_output.json
+*.zip
